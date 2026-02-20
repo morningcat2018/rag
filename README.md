@@ -50,3 +50,111 @@ dependencies = [
     "torch==2.2.0",
 ]
 ```
+
+## qdrant
+
+下载: https://github.com/qdrant/qdrant/releases
+
+启动: qdrant --storage-path ~/.local/share/qdrant
+
+访问测试：http://localhost:6333
+
+数据目录 默认在：当前目录下的 storage/
+
+可指定： qdrant --storage-path /自定义路径
+
+### curl 访问
+
+创建 Collection
+
+```curl
+curl -X PUT "http://localhost:6333/collections/my_collection" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "vectors": {
+      "size": 768,
+      "distance": "Cosine"
+    }
+}'
+```
+
+插入数据
+
+```curl
+curl -X PUT "http://localhost:6333/collections/my_collection/points" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "points": [
+      {
+        "id": 1,
+        "vector": [0.01, 0.02, ..., 0.99],
+        "payload": {
+          "text": "这是第一段文本",
+          "source": "doc1"
+        }
+      }
+    ]
+}'
+```
+
+向量搜索
+
+```curl
+curl -X POST "http://localhost:6333/collections/my_collection/points/search" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "vector": [0.01, 0.02, ..., 0.99],
+    "limit": 3
+}'
+```
+
+```curl
+curl -X DELETE http://localhost:6333/collections/my_collection
+```
+
+```curl
+curl http://localhost:6333/collections
+```
+
+
+### Python 使用（推荐方式）
+
+> pip install qdrant-client
+
+or
+
+> uv add qdrant-client
+
+```py
+from qdrant_client import QdrantClient
+from qdrant_client.models import VectorParams, Distance, PointStruct
+
+client = QdrantClient("localhost", port=6333)
+
+# 创建集合
+client.create_collection(
+    collection_name="my_collection",
+    vectors_config=VectorParams(size=768, distance=Distance.COSINE),
+)
+
+# 插入数据
+client.upsert(
+    collection_name="my_collection",
+    points=[
+        PointStruct(
+            id=1,
+            vector=[0.01]*768,
+            payload={"text": "测试文本"}
+        )
+    ],
+)
+
+# 查询
+hits = client.search(
+    collection_name="my_collection",
+    query_vector=[0.01]*768,
+    limit=3,
+)
+
+print(hits)
+```

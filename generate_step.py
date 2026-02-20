@@ -1,7 +1,7 @@
 import time
 from typing import List
-from common import embed_chunk
-from save_step import chromadb_collection
+from common_embedding import embed_chunk
+from common_vector_qdrant import select_embeddings
 from sentence_transformers import CrossEncoder
 from dotenv import load_dotenv
 from google import genai
@@ -18,13 +18,7 @@ def retrieve(query: str, top_k: int) -> List[str]:
     :return:
     """
     query_embedding = embed_chunk(query)
-    start = time.perf_counter()
-    results = chromadb_collection.query(
-        query_embeddings=[query_embedding],
-        n_results=top_k
-    )
-    print(f"召回: {(time.perf_counter() - start):.4f} 秒")
-    return results['documents'][0]
+    return select_embeddings(query_embedding, top_k)
 
 
 def rerank(query: str, retrieved_chunks: List[str], top_k: int) -> List[str]:
@@ -76,7 +70,9 @@ def generate(query: str, chunks: List[str]) -> str:
 
 
 if __name__ == "__main__":
-    query = "宝玉初见黛玉的描写"
+    query = "哆啦A梦使用的3个秘密道具分别是什么？"
+    # query = "宝玉初见黛玉的描写"
+
     retrieved_chunks = retrieve(query, 10)
     # for i, chunk in enumerate(retrieved_chunks):
     #     print(f"[{i}] {chunk}\n")

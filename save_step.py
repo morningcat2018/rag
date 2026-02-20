@@ -1,13 +1,7 @@
-import time
 import re
 from typing import List
-from common import embed_chunk
-import chromadb
-
-start = time.perf_counter()
-chromadb_client = chromadb.PersistentClient("./chroma_3")
-chromadb_collection = chromadb_client.get_or_create_collection(name="default")
-print(f"加载chromadb: {(time.perf_counter() - start):.4f} 秒")
+from common_embedding import embed_chunk
+from common_vector_qdrant import save_embeddings
 
 
 def split_by_chapters(content: str) -> List[str]:
@@ -77,20 +71,11 @@ def split_into_chunks(doc_file: str) -> List[str]:
     return smart_split_chunks(content)
 
 
-def save_embeddings(chunks: List[str], embeddings: List[List[float]]) -> None:
-    """
-    索引
-    :param chunks:
-    :param embeddings:
-    :return:
-    """
-    for i, (chunk, embedding) in enumerate(zip(chunks, embeddings)):
-        chromadb_collection.add(
-            documents=[chunk],
-            embeddings=[embedding],
-            ids=[str(i)]
-        )
-        print(i, chunk[:10])
+def split_into_chunks_simple(doc_file: str) -> List[str]:
+    with open(doc_file, 'r') as file:
+        content = file.read()
+
+    return [chunk for chunk in content.split("\n\n")]
 
 
 def save_step(doc_name):
@@ -98,12 +83,13 @@ def save_step(doc_name):
     系统初始化时执行一遍即可
     :return:
     """
-    chunks = split_into_chunks(doc_name)
+    chunks = split_into_chunks_simple(doc_name)
     # for i, chunk in enumerate(chunks):
     #     print(f"[{i}] {chunk}\n")
     embeddings = [embed_chunk(chunk) for chunk in chunks]
+    # print(len(embeddings[0]))
     save_embeddings(chunks, embeddings)
 
 
 if __name__ == "__main__":
-    save_step("红楼梦.txt")
+    save_step("doc.md")
