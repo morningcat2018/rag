@@ -1,11 +1,12 @@
 import chromadb
 import time
 from typing import List
+from log_config import logger
 
 start = time.perf_counter()
 chromadb_client = chromadb.PersistentClient("./chroma_3")
 chromadb_collection = chromadb_client.get_or_create_collection(name="default")
-print(f"加载chromadb: {(time.perf_counter() - start):.4f} 秒")
+logger.info(f"加载chromadb: {(time.perf_counter() - start):.4f} 秒")
 
 
 def save_embeddings(chunks: List[str], embeddings: List[List[float]]) -> None:
@@ -21,7 +22,7 @@ def save_embeddings(chunks: List[str], embeddings: List[List[float]]) -> None:
             embeddings=[embedding],
             ids=[str(i)]
         )
-        print(i, chunk[:10])
+        logger.debug(f"存储片段 {i}: {chunk[:10]}...")
 
 
 def select_embeddings(query_embedding, top_k: int) -> List[str]:

@@ -5,6 +5,7 @@ from common_vector_qdrant import select_embeddings
 from sentence_transformers import CrossEncoder
 from dotenv import load_dotenv
 from google import genai
+from log_config import logger
 
 load_dotenv()
 google_client = genai.Client()
@@ -31,7 +32,7 @@ def rerank(query: str, retrieved_chunks: List[str], top_k: int) -> List[str]:
     """
     start = time.perf_counter()
     cross_encoder = CrossEncoder('cross-encoder/mmarco-mMiniLMv2-L12-H384-v1')
-    print(f"加载cross_encoder: {(time.perf_counter() - start):.4f} 秒")
+    logger.info(f"加载cross_encoder: {(time.perf_counter() - start):.4f} 秒")
     pairs = [(query, chunk) for chunk in retrieved_chunks]
     scores = cross_encoder.predict(pairs)
 
@@ -57,14 +58,14 @@ def generate(query: str, chunks: List[str]) -> str:
 
 请基于上述内容作答，不要编造信息。"""
 
-    print(f"{prompt}\n\n---\n")
+    logger.debug(f"生成提示词:\n{prompt}\n\n---\n")
 
     start = time.perf_counter()
     response = google_client.models.generate_content(
         model="gemini-2.5-flash",
         contents=prompt
     )
-    print(f"gemini响应: {(time.perf_counter() - start):.4f} 秒")
+    logger.info(f"gemini响应: {(time.perf_counter() - start):.4f} 秒")
 
     return response.text
 
@@ -80,4 +81,4 @@ if __name__ == "__main__":
     # for i, chunk in enumerate(reranked_chunks):
     #     print(f"[{i}] {chunk}\n")
     answer = generate(query, reranked_chunks)
-    print(answer)
+    logger.info(f"gemini响应内容:\n{answer}")

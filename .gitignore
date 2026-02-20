@@ -12,6 +12,7 @@ chroma*
 test*
 .DS_Store
 .idea
+logs/
 
 
 # Virtual environments

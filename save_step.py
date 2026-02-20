@@ -3,6 +3,7 @@ from typing import List
 # from common_embedding import embed_chunk
 from common_embedding_bge import embed_chunk_list
 from common_vector_qdrant import save_embeddings
+from log_config import logger
 
 
 def split_by_chapters(content: str) -> List[str]:
@@ -87,7 +88,8 @@ def save_step(doc_name):
     chunks = split_into_chunks(doc_name)
     # embeddings = [embed_chunk(chunk) for chunk in chunks]
     embeddings = embed_chunk_list(chunks)
-    print(len(embeddings[0]))
+    logger.debug(f"生成 {len(embeddings)} 个嵌入向量")
+    logger.debug(f"嵌入向量维度: {len(embeddings[0])}")
     save_embeddings(chunks, embeddings)
 
 

@@ -2,12 +2,13 @@ from typing import List
 
 from qdrant_client import QdrantClient
 from qdrant_client.models import VectorParams, Distance, PointStruct
+from log_config import logger
 
 # import httpx
 #
 # r = httpx.get("http://127.0.0.1:6333")
-# print(r.status_code)
-# print(r.text)
+# logger.debug(f"HTTP状态码: {r.status_code}")
+# logger.debug(f"HTTP响应: {r.text}")
 
 QDRANT_COLLECTION_NAME = "my_collection_hong3"
 BATCH_SIZE = 100
@@ -52,7 +53,7 @@ def save_embeddings(chunks: List[str], embeddings: List[List[float]]) -> None:
             wait=True,
             points=batch,
         )
-        print(i, operation_info)
+        logger.info(f"存储批次 {i}: {operation_info}")
 
 
 def select_embeddings(query_embedding, top_k: int) -> List[str]:
@@ -69,6 +70,6 @@ def select_embeddings(query_embedding, top_k: int) -> List[str]:
         limit=top_k
     ).points
 
-    print(search_result)
+    logger.debug(search_result)
     res = [i.payload['text'] for i in search_result]
     return res
