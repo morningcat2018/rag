@@ -70,8 +70,8 @@ def generate(query: str, chunks: List[str]) -> str:
 
 
 if __name__ == "__main__":
-    query = "哆啦A梦使用的3个秘密道具分别是什么？"
-    # query = "宝玉初见黛玉的描写"
+    # query = "哆啦A梦使用的3个秘密道具分别是什么？"
+    query = "宝玉初见黛玉的描写"
 
     retrieved_chunks = retrieve(query, 10)
     # for i, chunk in enumerate(retrieved_chunks):

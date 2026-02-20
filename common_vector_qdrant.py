@@ -9,7 +9,8 @@ from qdrant_client.models import VectorParams, Distance, PointStruct
 # print(r.status_code)
 # print(r.text)
 
-QDRANT_COLLECTION_NAME = "my_collection"
+QDRANT_COLLECTION_NAME = "my_collection_hong2"
+BATCH_SIZE = 100
 
 qdrant_client = QdrantClient(
     url="http://127.0.0.1:6334",
@@ -43,12 +44,15 @@ def save_embeddings(chunks: List[str], embeddings: List[List[float]]) -> None:
     """
     points = [PointStruct(id=i, vector=embedding, payload={"text": chunk})
               for i, (chunk, embedding) in enumerate(zip(chunks, embeddings))]
-    operation_info = qdrant_client.upsert(
-        collection_name=QDRANT_COLLECTION_NAME,
-        wait=True,
-        points=points,
-    )
-    print(operation_info)
+    # 分批插入数据
+    for i in range(0, len(points), BATCH_SIZE):
+        batch = points[i:i + BATCH_SIZE]
+        operation_info = qdrant_client.upsert(
+            collection_name=QDRANT_COLLECTION_NAME,
+            wait=True,
+            points=batch,
+        )
+        print(i, operation_info)
 
 
 def select_embeddings(query_embedding, top_k: int) -> List[str]:

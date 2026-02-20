@@ -83,7 +83,7 @@ def save_step(doc_name):
     系统初始化时执行一遍即可
     :return:
     """
-    chunks = split_into_chunks_simple(doc_name)
+    chunks = split_into_chunks(doc_name)
     # for i, chunk in enumerate(chunks):
     #     print(f"[{i}] {chunk}\n")
     embeddings = [embed_chunk(chunk) for chunk in chunks]
@@ -92,4 +92,4 @@ def save_step(doc_name):
 
 
 if __name__ == "__main__":
-    save_step("doc.md")
+    save_step("红楼梦.txt")

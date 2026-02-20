@@ -51,7 +51,9 @@ dependencies = [
 ]
 ```
 
-## qdrant
+## 向量数据库 qdrant
+
+https://qdrant.org.cn/documentation/quickstart/
 
 下载: https://github.com/qdrant/qdrant/releases
 
