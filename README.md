@@ -160,3 +160,22 @@ hits = client.search(
 
 print(hits)
 ```
+
+## embedding model
+
+1. shibing624/text2vec-base-chinese
+
+本机缓存位置 ~/.cache/huggingface/hub
+
+- 📌 模型类型： 基于 CoSENT（Cosine Sentence）训练的方法，上层为一个 Transformer 编码器，底层使用 pooling 得到句子向量。
+- 🧠 基础结构： 内部使用 hfl/chinese-macbert-base 预训练模型作为词表示基础，再通过对比学习（contrastive learning）方式 fine-tune。
+- 📊 输出向量： 把句子映射到 768 维的密集向量
+- 基于 MacBERT-base 架构（12层 Transformer，768 hidden）
+- 采用 CoSENT 训练方式，专门优化语义相似度
+- 在中文 STS / 相似度任务上表现稳定
+
+2. BGE-base-zh
+
+BAAI BGE（Beijing General Embedding）系列是高质量中英文向量模型。
+其中： BAAI / Hugging Face 上的 bge-base-zh 是一个 中文 embedding 模型（768 维）
+

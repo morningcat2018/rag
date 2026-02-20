@@ -1,6 +1,6 @@
 import time
 from typing import List
-from common_embedding import embed_chunk
+from common_embedding_bge import embed_chunk
 from common_vector_qdrant import select_embeddings
 from sentence_transformers import CrossEncoder
 from dotenv import load_dotenv
@@ -57,7 +57,7 @@ def generate(query: str, chunks: List[str]) -> str:
 
 请基于上述内容作答，不要编造信息。"""
 
-    # print(f"{prompt}\n\n---\n")
+    print(f"{prompt}\n\n---\n")
 
     start = time.perf_counter()
     response = google_client.models.generate_content(

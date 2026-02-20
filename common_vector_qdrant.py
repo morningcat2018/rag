@@ -9,7 +9,7 @@ from qdrant_client.models import VectorParams, Distance, PointStruct
 # print(r.status_code)
 # print(r.text)
 
-QDRANT_COLLECTION_NAME = "my_collection_hong2"
+QDRANT_COLLECTION_NAME = "my_collection_hong3"
 BATCH_SIZE = 100
 
 qdrant_client = QdrantClient(
@@ -69,6 +69,6 @@ def select_embeddings(query_embedding, top_k: int) -> List[str]:
         limit=top_k
     ).points
 
-    # print(search_result)
+    print(search_result)
     res = [i.payload['text'] for i in search_result]
     return res

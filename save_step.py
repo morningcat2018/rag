@@ -1,6 +1,7 @@
 import re
 from typing import List
-from common_embedding import embed_chunk
+# from common_embedding import embed_chunk
+from common_embedding_bge import embed_chunk_list
 from common_vector_qdrant import save_embeddings
 
 
@@ -84,10 +85,9 @@ def save_step(doc_name):
     :return:
     """
     chunks = split_into_chunks(doc_name)
-    # for i, chunk in enumerate(chunks):
-    #     print(f"[{i}] {chunk}\n")
-    embeddings = [embed_chunk(chunk) for chunk in chunks]
-    # print(len(embeddings[0]))
+    # embeddings = [embed_chunk(chunk) for chunk in chunks]
+    embeddings = embed_chunk_list(chunks)
+    print(len(embeddings[0]))
     save_embeddings(chunks, embeddings)
 
 
