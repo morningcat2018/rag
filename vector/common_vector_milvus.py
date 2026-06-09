@@ -24,13 +24,14 @@ def save_embeddings(chunks: List[str],
     """
     # 检查集合是否已存在
     if client.has_collection(collection_name):
-        print(f"集合 {collection_name} 已存在，跳过创建")
+        logger.info(f"集合 {collection_name} 已存在，跳过创建")
     else:
         # 定义 schema（支持文本字段）
         from pymilvus import DataType
 
         schema = MilvusClient.create_schema(
             auto_id=False,
+            metric_type="COSINE",
             enable_dynamic_field=True  # 允许动态字段，这样就不需要预定义 text 字段了
         )
 
@@ -46,17 +47,17 @@ def save_embeddings(chunks: List[str],
             schema=schema
         )
 
-        # 使用 prepare_index_params 创建索引参数
-        index_params = client.prepare_index_params()
-        index_params.add_index(
-            field_name="vector",
-            index_type="IVF_FLAT", # 索引参数不合适：IVF_FLAT 索引不适合小数据集
-            metric_type="COSINE",
-            params={"nlist": 3}
-        )
-        # 创建索引
-        client.create_index(collection_name, index_params)
-        print(f"创建集合 {collection_name} 成功")
+        # # 使用 prepare_index_params 创建索引参数
+        # index_params = client.prepare_index_params()
+        # index_params.add_index(
+        #     field_name="vector",
+        #     index_type="IVF_FLAT",  # 索引参数不合适：IVF_FLAT 索引不适合小数据集
+        #     metric_type="COSINE",
+        #     params={"nlist": 128}
+        # )
+        # # 创建索引
+        # client.create_index(collection_name, index_params)
+        logger.info(f"创建集合 {collection_name} 成功")
 
     # 准备插入数据
     data = [
@@ -70,15 +71,15 @@ def save_embeddings(chunks: List[str],
             collection_name=collection_name,
             data=data
         )
-        print(f"成功插入 {len(result['ids'])} 条数据")
+        logger.info(f"成功插入 {len(result['ids'])} 条数据")
     except Exception as e:
-        print(f"插入失败: {e}")
+        logger.error(f"插入失败: {e}")
         # 如果失败，尝试分批插入
         batch_size = 100
         for i in range(0, len(data), batch_size):
             batch = data[i:i + batch_size]
             result = client.insert(collection_name=collection_name, data=batch)
-            print(f"成功插入批次 {i // batch_size + 1}: {len(result['ids'])} 条")
+            logger.info(f"成功插入批次 {i // batch_size + 1}: {len(result['ids'])} 条")
 
 
 def select_embeddings(query_embedding,
@@ -96,7 +97,7 @@ def select_embeddings(query_embedding,
     try:
         # 检查集合状态
         collection_info = client.describe_collection(collection_name)
-        print(collection_info)
+        logger.debug(collection_info)
 
         # 如果未加载，则加载
         if not client.has_collection(collection_name):
@@ -104,10 +105,10 @@ def select_embeddings(query_embedding,
 
         # 加载集合（只有加载后才能搜索）
         client.load_collection(collection_name)
-        print(f"集合 {collection_name} 已加载到内存")
+        logger.info(f"集合 {collection_name} 已加载到内存")
 
     except Exception as e:
-        print(f"加载集合失败: {e}")
+        logger.error(f"加载集合失败: {e}")
         return []
 
     # 2. 执行搜索
@@ -117,15 +118,16 @@ def select_embeddings(query_embedding,
         limit=top_k,  # 返回最相似的k条
         output_fields=["text"]  # 同时把原文也返回给我
     )
+    # print(res)
     # 3. 处理结果
     if not res or not res[0]:
-        print("查询无结果")
+        logger.info("查询无结果")
         return []
-
-    print(f"查询结果: {res[0][0]['entity']['text'][:100]}...")
-    print(f"相似度得分: {res[0][0]['distance']}")
+    for i in res[0]:
+        logger.info(f"查询结果: {i['entity']['text'][:100]}...")
+        logger.info(f"相似度得分: {i['distance']}")
     # return [item['entity']['text'] for item in res[0]]
-    return [i[0]['entity']['text'] for i in res]
+    return [i['entity']['text'] for i in res[0]]
 
 
 if __name__ == "__main__":

@@ -22,13 +22,8 @@ def save(doc_name, split_func=split_into_chunks):
 def query():
     query = "哆啦A梦使用的3个秘密道具分别是什么？"
     # query = "宝玉初见黛玉的描写"
-
     retrieved_chunks = retrieve(query, 10, select_embeddings, embed_chunk)
-    # for i, chunk in enumerate(retrieved_chunks):
-    #     print(f"[{i}] {chunk}\n")
     reranked_chunks = rerank(query, retrieved_chunks, 3)
-    # for i, chunk in enumerate(reranked_chunks):
-    #     print(f"[{i}] {chunk}\n")
     answer = generate(query, reranked_chunks, call)
     logger.info(f"LLM响应内容:\n{answer}")
 
@@ -38,7 +33,7 @@ if __name__ == "__main__":
         第一步:将文档切片,存入向量数据库
         执行一次即可
     """
-    save("doc/doc.md", split_into_chunks_simple)
+    # save("doc/doc.md", split_into_chunks_simple)
 
     """
     查询

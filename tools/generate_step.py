@@ -14,7 +14,10 @@ def retrieve(query: str, top_k: int, select_embeddings, embed_chunk) -> List[str
     :return:
     """
     query_embedding = embed_chunk(query)
-    return select_embeddings(query_embedding, top_k)
+    retrieved_chunks = select_embeddings(query_embedding, top_k)
+    for i, chunk in enumerate(retrieved_chunks):
+        logger.info(f"召回 --- [{i}] {chunk}")
+    return retrieved_chunks
 
 
 def rerank(query: str, retrieved_chunks: List[str], top_k: int) -> List[str]:
@@ -35,7 +38,10 @@ def rerank(query: str, retrieved_chunks: List[str], top_k: int) -> List[str]:
     scored_chunks = list(zip(retrieved_chunks, scores))
     scored_chunks.sort(key=lambda x: x[1], reverse=True)
 
-    return [chunk for chunk, _ in scored_chunks][:top_k]
+    reranked_chunks = [chunk for chunk, _ in scored_chunks][:top_k]
+    for i, chunk in enumerate(reranked_chunks):
+        logger.info(f"重排 --- [{i}] {chunk}")
+    return reranked_chunks
 
 
 def generate(query: str, chunks: List[str], llm_call) -> str:
