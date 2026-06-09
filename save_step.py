@@ -1,9 +1,5 @@
 import re
 from typing import List
-# from common_embedding import embed_chunk
-from common_embedding_bge import embed_chunk_list
-from common_vector_qdrant import save_embeddings
-from log_config import logger
 
 
 def split_by_chapters(content: str) -> List[str]:
@@ -78,20 +74,3 @@ def split_into_chunks_simple(doc_file: str) -> List[str]:
         content = file.read()
 
     return [chunk for chunk in content.split("\n\n")]
-
-
-def save_step(doc_name):
-    """
-    系统初始化时执行一遍即可
-    :return:
-    """
-    chunks = split_into_chunks(doc_name)
-    # embeddings = [embed_chunk(chunk) for chunk in chunks]
-    embeddings = embed_chunk_list(chunks)
-    logger.debug(f"生成 {len(embeddings)} 个嵌入向量")
-    logger.debug(f"嵌入向量维度: {len(embeddings[0])}")
-    save_embeddings(chunks, embeddings)
-
-
-if __name__ == "__main__":
-    save_step("红楼梦.txt")

@@ -23,6 +23,16 @@ def embed_chunk(chunk: str) -> List[float]:
     return embedding.tolist()
 
 
+def embed_chunk_list(chunks: List[str]) -> List[List[float]] | List[float]:
+    global embedding_model
+    if embedding_model is None:
+        start = time.perf_counter()
+        embedding_model = SentenceTransformer(EMBEDDING_MODEL_NAME)
+        logger.info(f"加载embedding_model: {(time.perf_counter() - start):.4f} 秒")
+    embedding = embedding_model.encode(chunks, normalize_embeddings=True)
+    return embedding.tolist()
+
+
 if __name__ == "__main__":
     embedding = embed_chunk("红楼梦")
     logger.info(f"嵌入向量维度: {len(embedding)}, 向量: {embedding}")

@@ -1,21 +1,16 @@
 import time
 from typing import List
-from common_embedding_bge import embed_chunk
-from common_vector_qdrant import select_embeddings
 from sentence_transformers import CrossEncoder
-from dotenv import load_dotenv
-from google import genai
 from log_config import logger
 
-load_dotenv()
-google_client = genai.Client()
 
-
-def retrieve(query: str, top_k: int) -> List[str]:
+def retrieve(query: str, top_k: int, select_embeddings, embed_chunk) -> List[str]:
     """
     召回
     :param query:
     :param top_k:
+    :param select_embeddings:
+    :param embed_chunk:
     :return:
     """
     query_embedding = embed_chunk(query)
@@ -31,6 +26,7 @@ def rerank(query: str, retrieved_chunks: List[str], top_k: int) -> List[str]:
     :return:
     """
     start = time.perf_counter()
+    # 重排序模型
     cross_encoder = CrossEncoder('cross-encoder/mmarco-mMiniLMv2-L12-H384-v1')
     logger.info(f"加载cross_encoder: {(time.perf_counter() - start):.4f} 秒")
     pairs = [(query, chunk) for chunk in retrieved_chunks]
@@ -42,7 +38,7 @@ def rerank(query: str, retrieved_chunks: List[str], top_k: int) -> List[str]:
     return [chunk for chunk, _ in scored_chunks][:top_k]
 
 
-def generate(query: str, chunks: List[str]) -> str:
+def generate(query: str, chunks: List[str], llm_call) -> str:
     """
     生成
     :param query:
@@ -59,26 +55,4 @@ def generate(query: str, chunks: List[str]) -> str:
 请基于上述内容作答，不要编造信息。"""
 
     logger.debug(f"生成提示词:\n{prompt}\n\n---\n")
-
-    start = time.perf_counter()
-    response = google_client.models.generate_content(
-        model="gemini-2.5-flash",
-        contents=prompt
-    )
-    logger.info(f"gemini响应: {(time.perf_counter() - start):.4f} 秒")
-
-    return response.text
-
-
-if __name__ == "__main__":
-    # query = "哆啦A梦使用的3个秘密道具分别是什么？"
-    query = "宝玉初见黛玉的描写"
-
-    retrieved_chunks = retrieve(query, 10)
-    # for i, chunk in enumerate(retrieved_chunks):
-    #     print(f"[{i}] {chunk}\n")
-    reranked_chunks = rerank(query, retrieved_chunks, 3)
-    # for i, chunk in enumerate(reranked_chunks):
-    #     print(f"[{i}] {chunk}\n")
-    answer = generate(query, reranked_chunks)
-    logger.info(f"gemini响应内容:\n{answer}")
+    return llm_call(prompt)

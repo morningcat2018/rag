@@ -58,10 +58,10 @@ def save_embeddings(chunks: List[str], embeddings: List[List[float]]) -> None:
 
 def select_embeddings(query_embedding, top_k: int) -> List[str]:
     """
-    获取
-    :param query_embedding:
-    :param top_k:
-    :return:
+    根据目标向量{query_embedding}查询向量数据库中的相似向量,查询最近的{top_k}条向量数据
+    :param query_embedding: 目标向量
+    :param top_k: 查询返回条数
+    :return: 相似度最近的{top_k}条向量数据
     """
     search_result = qdrant_client.query_points(
         collection_name=QDRANT_COLLECTION_NAME,

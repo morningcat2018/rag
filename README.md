@@ -24,6 +24,8 @@ uv remove sentence-transformers
 uv add sentence-transformers==2.6.1
 
 uv run --with jupyter jupyter lab
+
+uv add openai
 ```
 
 需要在[google aistudio](https://aistudio.google.com/api-keys)申请API key;
@@ -57,13 +59,25 @@ https://qdrant.org.cn/documentation/quickstart/
 
 下载: https://github.com/qdrant/qdrant/releases
 
-启动: qdrant --storage-path ~/.local/share/qdrant
+config.yaml
+```commandline
+storage:
+  storage_path: ~/.local/share/qdrant
+  snapshots_path: ~/.local/share/qdrant/snapshots
+
+service:
+  host: 127.0.0.1
+  http_port: 6333
+  grpc_port: 6334
+```
+
+cd software
+
+启动: ./qdrant --config-path ./config.yaml
 
 访问测试：http://localhost:6333
 
 数据目录 默认在：当前目录下的 storage/
-
-可指定： qdrant --storage-path /自定义路径
 
 ### curl 访问
 
