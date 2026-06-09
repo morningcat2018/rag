@@ -13,6 +13,9 @@ model = AutoModel.from_pretrained(EMBEDDING_MODEL_NAME)
 logger.info(f"加载embedding_model: {(time.perf_counter() - start):.4f} 秒")
 
 
+"""
+768 维
+"""
 def embed_chunk_list(chunks: List[str]) -> List[List[float]] | List[float]:
     """
     片段文本向量化
@@ -38,7 +41,7 @@ def embed_chunk_list(chunks: List[str]) -> List[List[float]] | List[float]:
 
 
 def embed_chunk(chunk: str) -> list[float]:
-    return embed_chunk_list([chunk])
+    return embed_chunk_list([chunk])[0]
 
 
 if __name__ == "__main__":

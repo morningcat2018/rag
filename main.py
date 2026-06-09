@@ -1,11 +1,8 @@
 from generate_step import *
 from save_step import *
 from llm.llm_deepseek import call
-from vector.common_vector_qdrant import select_embeddings
-from vector.common_vector_qdrant import save_embeddings
-# from common_embedding import embed_chunk
-from embedding.common_embedding import embed_chunk
-from embedding.common_embedding import embed_chunk_list
+from vector.common_vector_qdrant import select_embeddings, save_embeddings
+from embedding.embedding_bailian import embed_chunk_list, embed_chunk
 
 
 def save_step(doc_name):

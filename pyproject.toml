@@ -14,4 +14,5 @@ dependencies = [
     "qdrant-client>=1.12.1",
     "sentence-transformers==2.6.1",
     "torch==2.2.0",
+    "zai-sdk>=0.2.2",
 ]

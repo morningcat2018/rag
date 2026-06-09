@@ -6,7 +6,9 @@ from log_config import logger
 embedding_model = None
 EMBEDDING_MODEL_NAME = "shibing624/text2vec-base-chinese"
 
-
+"""
+768 维
+"""
 def embed_chunk(chunk: str) -> List[float]:
     """
     片段文本向量化

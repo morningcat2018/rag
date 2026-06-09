@@ -26,6 +26,7 @@ uv add sentence-transformers==2.6.1
 uv run --with jupyter jupyter lab
 
 uv add openai
+uv add zai-sdk # 智谱AI 开放平台
 ```
 
 需要在[google aistudio](https://aistudio.google.com/api-keys)申请API key;
