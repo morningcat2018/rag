@@ -6,14 +6,12 @@ dist/
 wheels/
 *.egg-info
 .ipynb_checkpoints
-chroma*
 .env
 .claude
-test*
+test/
 .DS_Store
 .idea
 logs/
-
-
+db/
 # Virtual environments
 .venv

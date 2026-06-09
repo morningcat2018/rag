@@ -4,7 +4,7 @@ from typing import List
 from log.log_config import logger
 
 start = time.perf_counter()
-chromadb_client = chromadb.PersistentClient("../chroma_3")
+chromadb_client = chromadb.PersistentClient("../db/chroma_3")
 chromadb_collection = chromadb_client.get_or_create_collection(name="default")
 logger.info(f"加载chromadb: {(time.perf_counter() - start):.4f} 秒")
 

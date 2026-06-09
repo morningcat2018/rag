@@ -27,6 +27,10 @@ uv run --with jupyter jupyter lab
 
 uv add openai
 uv add zai-sdk # 智谱AI 开放平台
+
+# milvus
+uv add pymilvus
+uv add milvus-lit
 ```
 
 需要在[google aistudio](https://aistudio.google.com/api-keys)申请API key;
