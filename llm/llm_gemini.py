@@ -1,7 +1,7 @@
 import time
 from dotenv import load_dotenv
 from google import genai
-from log_config import logger
+from log.log_config import logger
 
 load_dotenv()
 google_client = genai.Client()

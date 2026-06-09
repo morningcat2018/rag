@@ -1,7 +1,7 @@
 import time
 from typing import List
 from sentence_transformers import CrossEncoder
-from log_config import logger
+from log.log_config import logger
 
 
 def retrieve(query: str, top_k: int, select_embeddings, embed_chunk) -> List[str]:

@@ -1,5 +1,5 @@
-from generate_step import *
-from save_step import *
+from tools.generate_step import *
+from tools.save_step import *
 from llm.llm_deepseek import call
 from vector.common_vector_qdrant import select_embeddings, save_embeddings
 from embedding.embedding_bailian import embed_chunk_list, embed_chunk
@@ -23,7 +23,7 @@ if __name__ == "__main__":
         第一步:将文档切片,存入向量数据库
         执行一次即可
     """
-    # save_step("红楼梦.txt")
+    # save_step("doc/红楼梦.txt")
 
     """
     查询

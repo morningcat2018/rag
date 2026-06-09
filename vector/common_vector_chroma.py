@@ -1,7 +1,7 @@
 import chromadb
 import time
 from typing import List
-from log_config import logger
+from log.log_config import logger
 
 start = time.perf_counter()
 chromadb_client = chromadb.PersistentClient("../chroma_3")

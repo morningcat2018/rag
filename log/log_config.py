@@ -48,4 +48,4 @@ def setup_logger(name: str = "rag_app", level: int = logging.INFO, log_file: Opt
 
 
 # 默认日志记录器 - 同时输出到控制台和项目目录下的日志文件
-logger = setup_logger(log_file="logs/rag_app.log")
+logger = setup_logger(log_file="../logs/rag_app.log")

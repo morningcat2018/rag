@@ -1,7 +1,7 @@
 import time
 from typing import List
 from sentence_transformers import SentenceTransformer
-from log_config import logger
+from log.log_config import logger
 
 embedding_model = None
 EMBEDDING_MODEL_NAME = "shibing624/text2vec-base-chinese"

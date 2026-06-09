@@ -4,7 +4,7 @@ from typing import List
 from dotenv import load_dotenv
 from zai import ZhipuAiClient
 
-from log_config import logger
+from log.log_config import logger
 
 load_dotenv()
 MODULE_NAME = "embedding-3"

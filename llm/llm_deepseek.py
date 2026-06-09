@@ -4,7 +4,7 @@ import time
 from dotenv import load_dotenv
 from openai import OpenAI
 
-from log_config import logger
+from log.log_config import logger
 
 load_dotenv()
 

@@ -3,7 +3,7 @@ from typing import List
 
 import torch
 from transformers import AutoTokenizer, AutoModel
-from log_config import logger
+from log.log_config import logger
 
 EMBEDDING_MODEL_NAME = "BAAI/bge-base-zh"
 

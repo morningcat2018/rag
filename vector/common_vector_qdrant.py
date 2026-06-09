@@ -2,7 +2,7 @@ from typing import List
 
 from qdrant_client import QdrantClient
 from qdrant_client.models import VectorParams, Distance, PointStruct
-from log_config import logger
+from log.log_config import logger
 
 # import httpx
 #
