@@ -165,6 +165,10 @@ print(hits)
 
 1. shibing624/text2vec-base-chinese
 
+https://huggingface.co/shibing624/text2vec-base-chinese
+
+https://github.com/shibing624/text2vec
+
 本机缓存位置 ~/.cache/huggingface/hub
 
 - 📌 模型类型： 基于 CoSENT（Cosine Sentence）训练的方法，上层为一个 Transformer 编码器，底层使用 pooling 得到句子向量。
@@ -178,4 +182,9 @@ print(hits)
 
 BAAI BGE（Beijing General Embedding）系列是高质量中英文向量模型。
 其中： BAAI / Hugging Face 上的 bge-base-zh 是一个 中文 embedding 模型（768 维）
+
+https://huggingface.co/BAAI/bge-base-zh
+
+https://github.com/FlagOpen/FlagEmbedding/blob/master/README_zh.md
+
 
