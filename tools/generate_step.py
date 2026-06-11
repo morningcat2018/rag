@@ -2,11 +2,14 @@ import time
 from typing import List
 from sentence_transformers import CrossEncoder
 from log.log_config import logger
+from tools.data import DEFAULT_COLLECTION_NAME
 
 
-def retrieve(query: str, top_k: int, select_embeddings, embed_chunk) -> List[str]:
+def retrieve(query: str, top_k: int, select_embeddings, embed_chunk,
+             collection_name=DEFAULT_COLLECTION_NAME) -> List[str]:
     """
     召回
+    :param collection_name:
     :param query:
     :param top_k:
     :param select_embeddings:
@@ -14,7 +17,7 @@ def retrieve(query: str, top_k: int, select_embeddings, embed_chunk) -> List[str
     :return:
     """
     query_embedding = embed_chunk(query)
-    retrieved_chunks = select_embeddings(query_embedding, top_k)
+    retrieved_chunks = select_embeddings(query_embedding, top_k, collection_name)
     for i, chunk in enumerate(retrieved_chunks):
         logger.info(f"召回 --- [{i}] {chunk}")
     return retrieved_chunks

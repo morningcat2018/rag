@@ -1,0 +1,1 @@
+DEFAULT_COLLECTION_NAME = "demo_collection"

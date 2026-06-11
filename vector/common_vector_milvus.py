@@ -1,14 +1,14 @@
 import time
 from typing import List
 
-from pymilvus import connections, MilvusClient
+from pymilvus import MilvusClient
 
 from log.log_config import logger
+from tools.data import DEFAULT_COLLECTION_NAME
 
 start = time.perf_counter()
 client = MilvusClient("./db/my_milvus_demo.db")
 logger.info(f"加载milvus: {(time.perf_counter() - start):.4f} 秒")
-DEFAULT_COLLECTION_NAME = "demo_collection"
 
 
 def save_embeddings(chunks: List[str],
@@ -128,10 +128,3 @@ def select_embeddings(query_embedding,
         logger.info(f"相似度得分: {i['distance']}")
     # return [item['entity']['text'] for item in res[0]]
     return [i['entity']['text'] for i in res[0]]
-
-
-if __name__ == "__main__":
-    # connections.connect(host='127.0.0.1', port='19530')
-    print("Milvus Lite 连接成功！")
-    client = MilvusClient("../db/my_milvus_demo-2.db")
-    print("Milvus Lite 已就绪！")

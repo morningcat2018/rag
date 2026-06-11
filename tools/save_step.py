@@ -8,7 +8,7 @@ def split_by_chapters(content: str) -> List[str]:
     模式：第X回  章节标题（X为中文数字）
     """
     # 匹配"第X回"格式，支持"第X回"和"第X回  标题"两种格式
-    chapter_pattern = r'第[一二三四五六七八九十百]+回\s*[^\n]*'
+    chapter_pattern = r'第[一二三四五六七八九十百]+章\s*[^\n]*'
 
     # 找到所有章节标题位置
     chapters = []
