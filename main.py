@@ -2,7 +2,7 @@ from tools.generate_step import retrieve, rerank, generate
 from tools.save_step import split_into_chunks, split_into_chunks_simple
 from embedding.embedding_glm import embed_chunk_list, embed_chunk
 from vector.common_vector_milvus import select_embeddings, save_embeddings
-from llm.llm_glm import call
+from llm.llm_bailian import call
 from log.log_config import logger
 from tools.data import DEFAULT_COLLECTION_NAME
 
